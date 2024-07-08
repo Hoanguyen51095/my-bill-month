@@ -1,0 +1,166 @@
+<!-- 
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, Java, PHP, Ruby, Perl,
+C#, OCaml, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, SQLite, Prolog.
+Code, Compile, Run and Debug online from anywhere in world.
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiền trọ viết bởi Hòa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .room {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+        p {
+            margin: 0 0 10px;
+        }
+        strong {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tiền trọ viết bởi Hòa</h1>
+
+        <div id="rooms"></div>
+        
+        <button onclick="calculateBill()">Tính toán</button>
+        
+        <div id="result"></div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const roomsContainer = document.getElementById('rooms');
+            for (let i = 1; i <= 10; i++) {
+                roomsContainer.innerHTML += `
+                    <div class="room">
+                        <h2>Phòng ${i}</h2>
+                        <label for="oldElectricity${i}">Số điện cũ (kWh):</label>
+                        <input type="number" id="oldElectricity${i}" placeholder="Nhập số điện cũ (kWh)">
+                        <label for="newElectricity${i}">Số điện mới (kWh):</label>
+                        <input type="number" id="newElectricity${i}" placeholder="Nhập số điện mới (kWh)">
+                        <label for="oldWater${i}">Số nước cũ (m³):</label>
+                        <input type="number" id="oldWater${i}" placeholder="Nhập số nước cũ (m³)">
+                        <label for="newWater${i}">Số nước mới (m³):</label>
+                        <input type="number" id="newWater${i}" placeholder="Nhập số nước mới (m³)">
+                        <label for="roomRent${i}">Tiền phòng (VND):</label>
+                        <input type="number" id="roomRent${i}" placeholder="Nhập tiền phòng (VND)">
+                        <label for="garbageFee${i}">Tiền rác (VND):</label>
+                        <input type="number" id="garbageFee${i}" placeholder="Nhập tiền rác (VND)">
+                        <label for="wifiFee${i}">Tiền wifi (VND):</label>
+                        <input type="number" id="wifiFee${i}" placeholder="Nhập tiền wifi (VND)">
+                        <label for="discount${i}">Tiền giảm từ chủ trọ (VND):</label>
+                        <input type="number" id="discount${i}" placeholder="Nhập tiền giảm (VND)">
+                    </div>
+                `;
+            }
+        });
+
+        function calculateBill() {
+            let resultHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const oldElectricity = parseFloat(document.getElementById(`oldElectricity${i}`).value) || 0;
+                const newElectricity = parseFloat(document.getElementById(`newElectricity${i}`).value) || 0;
+                const oldWater = parseFloat(document.getElementById(`oldWater${i}`).value) || 0;
+                const newWater = parseFloat(document.getElementById(`newWater${i}`).value) || 0;
+                const roomRent = parseFloat(document.getElementById(`roomRent${i}`).value) || 0;
+                const garbageFee = parseFloat(document.getElementById(`garbageFee${i}`).value) || 0;
+                const wifiFee = parseFloat(document.getElementById(`wifiFee${i}`).value) || 0;
+                const discount = parseFloat(document.getElementById(`discount${i}`).value) || 0;
+
+                const electricityUsage = newElectricity - oldElectricity;
+                const waterUsage = newWater - oldWater;
+
+                const electricityRate = 2000; // Giá điện giả định (VND/kWh)
+                const waterRate = 15000; // Giá nước giả định (VND/m³)
+
+                const totalElectricityCost = electricityUsage * electricityRate;
+                const totalWaterCost = waterUsage * waterRate;
+
+                const totalCost = totalElectricityCost + totalWaterCost + roomRent + garbageFee + wifiFee - discount;
+
+                resultHTML += `
+                    <div>
+                        <h2>Phòng ${i}</h2>
+                        <p>Tổng số điện sử dụng: ${electricityUsage} kWh</p>
+                        <p>Tổng số nước sử dụng: ${waterUsage} m³</p>
+                        <p>Tổng tiền điện: ${totalElectricityCost.toLocaleString()} VND</p>
+                        <p>Tổng tiền nước: ${totalWaterCost.toLocaleString()} VND</p>
+                        <p>Tiền phòng: ${roomRent.toLocaleString()} VND</p>
+                        <p>Tiền rác: ${garbageFee.toLocaleString()} VND</p>
+                        <p>Tiền wifi: ${wifiFee.toLocaleString()} VND</p>
+                        <p>Tiền giảm: -${discount.toLocaleString()} VND</p>
+                        <p><strong>Tổng tiền cần thanh toán: ${totalCost.toLocaleString()} VND</strong></p>
+                    </div>
+                `;
+            }
+            document.getElementById('result').innerHTML = resultHTML;
+        }
+    </script>
+</body>
+</html>
